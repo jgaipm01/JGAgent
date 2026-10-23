@@ -36,7 +36,7 @@ def youtube_key() -> str | None:
 
 
 def test_video_url() -> str | None:
-    """개발용 테스트 영상 링크 (.env TEST_VIDEO_URL). 비어 있으면 화면에 버튼이 안 보인다."""
+    """개발용 테스트 영상 링크 (.env TEST_VIDEO_URL). scripts/reset_test_video.py 가 쓴다."""
     return (os.getenv("TEST_VIDEO_URL") or "").strip() or None
 
 

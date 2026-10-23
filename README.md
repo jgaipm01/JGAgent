@@ -65,11 +65,11 @@ python scripts/open_profile.py 유튜브1
 ## 4. 설정 (`config.yaml`)
 
 ```yaml
-profiles:                     # 내 컴퓨터의 크롬 프로필
+profiles:                     # 내 컴퓨터의 크롬 프로필 (유튜브2·3도 같은 형식)
   - { name: 유튜브1, dir: profiles/youtube1 }
 comment: { min_chars: 40, max_chars: 120, brand: 운명원 }
 limits:  { daily_max_comments: 10 }
-search:  { query: "연애|남자심리|...", max_results: 20 }
+search:  { query: "연애 고민|연애 상담|남자 심리|...", within_days: 30, max_results: 50, min_comments: 10 }
 rising:  { min_views: 1000, max_views: 5000, min_views_per_hour: 150 }
 typing:  { min_delay_ms: 60, max_delay_ms: 180 }
 ai:      { model: claude-opus-5-5, effort: high }
@@ -79,7 +79,7 @@ ai:      { model: claude-opus-5-5, effort: high }
 
 | 규칙 | 어떻게 지키나 |
 |---|---|
-| 영상당 댓글 1개 | 게시 전에 서버가 기록을 확인하고, DB 고유 인덱스로 한 번 더 막음. 계정이 달라도 같은 영상에는 못 담 |
+| 영상당 댓글 1개 | 게시 전에 서버가 기록을 확인하고, DB 고유 인덱스로 한 번 더 막음. 계정이 달라도 같은 영상에는 달 수 없음 |
 | 하루 게시 상한 (기본 10개) | 한국 시간 기준 오늘 게시 수를 세서 상한이면 거부 |
 | 동시에 한 건만 | 게시 중에는 다른 게시 요청을 거부 |
 | 중복 게시 방지 | 게시 버튼을 누른 뒤 확인만 실패한 경우도 '확인 안 됨'으로 기록하고 게시한 것으로 침 |
