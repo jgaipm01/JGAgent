@@ -1,0 +1,39 @@
+# 내 컴퓨터의 크롬 프로필. name 은 화면 표시용, dir 은 프로필 폴더(영문 경로 권장).
+# 폴더가 없는 프로필은 대시보드에서 "로그인 필요"로 표시되고 배정되지 않습니다.
+profiles:
+  - { name: 유튜브1, dir: profiles/youtube1 }
+  - { name: 유튜브2, dir: profiles/youtube2 }
+  - { name: 유튜브3, dir: profiles/youtube3 }
+
+comment: { min_chars: 40, max_chars: 120, brand: 운명원 }
+
+limits: { daily_max_comments: 10 }
+
+# [영상 불러오기] 검색 조건. | 는 "또는"
+# 최근 within_days 일 안에서 관련도 높은 영상을 찾고, 댓글 많은 순으로 max_results 개를 보여준다.
+# (화면에서 최신순으로 바꿔 볼 수 있음)
+search:
+  query: "연애 고민|연애 상담|남자 심리|여자 심리|짝사랑|썸|재회|이별 극복|연애 조언"
+  within_days: 30
+  orders: [viewCount, relevance]   # 조회수 순 + 관련도 순으로 각각 찾아 합침 (불러오기 1번에 할당량 400)
+  max_results: 50           # 사실상 조건에 맞는 영상 전부
+  min_comments: 10          # 댓글이 이 수 이상인 영상만 (반응 있는 영상 + AI가 참고할 인기 댓글 확보)
+  min_duration_sec: 181     # 쇼츠(최대 3분) 제외
+  max_duration_sec: 3600    # 라이브 다시보기 등 너무 긴 영상 제외 (자막이 길면 AI 비용도 커짐)
+  exclude_categories: [10, 17, 20]          # 음악, 스포츠, 게임
+  exclude_keywords: [타로, 사주, 운세, 신점, OST, MV]  # 경쟁 업종 채널, 음악 영상 제외
+
+# 뜨기 직전 영상 찾기 (가점)
+rising:
+  query: "연애"
+  min_views: 1000
+  max_views: 5000
+  min_views_per_hour: 150
+  within_hours: 48
+
+# 한 글자씩 타이핑 속도 (글자당 대기 시간, 밀리초)
+typing: { min_delay_ms: 60, max_delay_ms: 180 }
+
+ai:
+  model: claude-opus-5-5
+  effort: high

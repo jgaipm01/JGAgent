@@ -1,0 +1,23 @@
+# 비밀 값 — 절대 올리지 않기
+.env
+
+# 크롬 프로필 (구글 로그인 쿠키가 들어 있음)
+profiles/
+
+# 게시 기록 DB, 화면 캡처
+data/
+
+# 과제 안내 문서 (회사 자료)
+track-2-marketing-agent.pdf
+
+# 영상
+*.mp4
+*.mkv
+*.webm
+*.mov
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/

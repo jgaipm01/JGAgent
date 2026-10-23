@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>유튜브 댓글 에이전트</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231d1f8f'/%3E%3Cpath d='M12 9l12 7-12 7z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">▶</span>
+      <div>
+        <h1>유튜브 댓글 에이전트</h1>
+        <p class="sub">영상 맥락에 맞는 댓글로 운명원 연애 사주를 알려요</p>
+      </div>
+    </div>
+    <div class="meters">
+      <div class="meter" title="하루 게시 상한 (config.yaml)">
+        <span class="meter-label">오늘 게시</span>
+        <strong id="today">0</strong><span class="meter-of">/ <span id="limit">10</span></span>
+      </div>
+      <div class="meter-rule">영상당 댓글 1개</div>
+    </div>
+  </header>
+
+  <div id="setup" class="setup" hidden></div>
+
+  <main class="cols">
+    <!-- ① 영상 불러오기 -->
+    <section class="col" aria-labelledby="h1">
+      <div class="col-head">
+        <span class="num">1</span>
+        <div><h2 id="h1">영상 불러오기</h2><p>버튼을 누르면 최신 연애 영상이 나와요</p></div>
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" role="tab" data-tab="latest">최신 영상</button>
+        <button class="tab" role="tab" data-tab="rising">뜨기 직전</button>
+      </div>
+      <button id="load" class="btn primary block">영상 불러오기</button>
+      <form id="url-form" class="url-form">
+        <input id="url-input" placeholder="또는 유튜브 링크 붙여넣기" autocomplete="off" aria-label="유튜브 영상 링크">
+        <button class="btn" type="submit">열기</button>
+      </form>
+      <div class="list-bar">
+        <p id="list-note" class="note"></p>
+        <div id="sort" class="sort" hidden>
+          <button type="button" data-sort="comments" class="active">댓글 많은 순</button>
+          <button type="button" data-sort="date">최신순</button>
+        </div>
+      </div>
+      <ul id="video-list" class="video-list"></ul>
+    </section>
+
+    <!-- ② 영상 선택 -->
+    <section class="col" aria-labelledby="h2">
+      <div class="col-head">
+        <span class="num">2</span>
+        <div><h2 id="h2">영상 선택</h2><p>영상을 고르면 AI가 고민과 댓글 초안을 만들어요</p></div>
+      </div>
+      <div id="draft-empty" class="empty">왼쪽 목록에서 영상을 골라 주세요.</div>
+      <div id="draft-loading" class="loading" hidden>
+        <span class="spinner" aria-hidden="true"></span>
+        <span>AI가 자막과 인기 댓글을 읽는 중… (10~30초)</span>
+      </div>
+      <div id="draft-error" class="error-box" hidden></div>
+      <div id="draft" hidden>
+        <a id="d-video" class="mini" target="_blank" rel="noopener">
+          <img id="d-thumb" alt="">
+          <div><strong id="d-title"></strong><span id="d-meta"></span></div>
+        </a>
+        <div class="worry">
+          <span class="label">영상 속 고민</span>
+          <p id="d-worry"></p>
+        </div>
+        <div class="field">
+          <span class="label">참고한 장면 <span id="d-source" class="badge"></span></span>
+          <ul id="d-scenes" class="scenes"></ul>
+        </div>
+        <div class="field">
+          <span class="label">댓글 다는 시청자</span>
+          <p id="d-persona" class="persona"></p>
+        </div>
+        <div class="field">
+          <label class="label" for="d-comment">댓글 초안 <span class="hint">직접 고쳐도 돼요</span></label>
+          <textarea id="d-comment" rows="4"></textarea>
+          <div class="checks">
+            <span id="d-count" class="count"></span>
+            <ul id="d-problems" class="problems"></ul>
+          </div>
+        </div>
+        <button id="regen" class="btn">다시 생성</button>
+      </div>
+    </section>
+
+    <!-- ③ 댓글 달기 -->
+    <section class="col" aria-labelledby="h3">
+      <div class="col-head">
+        <span class="num">3</span>
+        <div><h2 id="h3">댓글 달기</h2><p>누르면 크롬이 열리고 한 글자씩 입력해 게시해요</p></div>
+      </div>
+      <label class="label" for="profile">사용할 계정</label>
+      <select id="profile"></select>
+      <button id="post" class="btn primary big block" disabled>댓글 달기</button>
+      <p id="post-reason" class="reason"></p>
+      <ol id="steps" class="steps"></ol>
+      <div id="result" class="result" hidden></div>
+    </section>
+  </main>
+
+  <section class="log">
+    <div class="log-head">
+      <h2>게시 기록</h2>
+      <span class="note">어느 영상에 · 어느 계정으로 · 무슨 댓글을 · 결과 (최신순)</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>시간</th><th>영상</th><th>계정</th><th>댓글</th><th>결과</th></tr></thead>
+        <tbody id="log-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

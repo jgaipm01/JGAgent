@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+playwright
+anthropic
+pydantic
+youtube-transcript-api
+google-api-python-client
+pyyaml
+python-dotenv
+tzdata
+pytest
+httpx
